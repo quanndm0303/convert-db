@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--    <conversionRule conversionWord="mx" converterClass="ch.qos.logback.classic.pattern.MessageConverter"/>-->
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path"/>
+    <property name="LOG_FILE_NORMAL" value="${LOG_PATH}/${springAppName:-general}_normal.log"/>
+    <property name="LOG_FILE_DEBUG" value="${LOG_PATH}/${springAppName:-general}_debug.log"/>
+    <property name="LOG_FILE_ERROR" value="${LOG_PATH}/${springAppName:-general}_error.log"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[FLEXCORE]:%d{yyyy-MM-dd HH:mm:ss.SSS} [host]:${HOSTNAME} [level]:%-5level [appname]:${springAppName:-} [other]:%X{X-B3-TraceId:-} %X{X-B3-SpanId:-} %X{X-B3-ParentSpanId:-} %-4relative [threadid]:%thread [package]:%logger{255} [method]:%M [line]:%line - [message]:%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="LOG_FILE_NORMAL">
+        <file>${LOG_FILE_NORMAL}</file>
+        <encoder>
+            <pattern>[FLEXCORE]:%d{yyyy-MM-dd HH:mm:ss.SSS} [host]:${HOSTNAME} [level]:%-5level [appname]:${springAppName:-} [other]:%X{X-B3-TraceId:-} %X{X-B3-SpanId:-} %X{X-B3-ParentSpanId:-} %-4relative [threadid]:%thread [package]:%logger{255} [method]:%M [line]:%line - [message]:%msg%n
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${springAppName}_all_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>200</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="LOG_FILE_DEBUG">
+        <file>${LOG_FILE_DEBUG}</file>
+        <encoder>
+            <pattern>[FLEXCORE]:%d{yyyy-MM-dd HH:mm:ss.SSS} [host]:${HOSTNAME} [level]:%-5level [appname]:${springAppName:-} [other]:%X{X-B3-TraceId:-} %X{X-B3-SpanId:-} %X{X-B3-ParentSpanId:-} %-4relative [threadid]:%thread [package]:%logger{255} [method]:%M [line]:%line - [message]:%msg%n
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${springAppName}_debug_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>200</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="LOG_FILE_ERROR">
+        <file>${LOG_FILE_ERROR}</file>
+        <encoder>
+            <pattern>[FLEXCORE]:%d{yyyy-MM-dd HH:mm:ss.SSS} [host]:${HOSTNAME} [level]:%-5level [appname]:${springAppName:-} [other]:%X{X-B3-TraceId:-} %X{X-B3-SpanId:-} %X{X-B3-ParentSpanId:-} %-4relative [threadid]:%thread [package]:%logger{255} [method]:%M [line]:%line - [message]:%msg%n
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${springAppName}_error_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>200</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <logger name="com.fds.flex" additivity="true" level="ALL">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_FILE_NORMAL"/>
+        <appender-ref ref="LOG_FILE_DEBUG"/>
+        <appender-ref ref="LOG_FILE_ERROR"/>
+    </logger>
+</configuration>

@@ -1,0 +1,6 @@
+[FLEXCORE]:2024-10-09 09:43:50.919 [host]:DinhQuan [level]:INFO 
+                [appname]:inspectionmgt [other]:  
+                1302 [threadid]:main [package]:com.fds.flex.core.inspectionmgt.InspectionMgtApplication [method]:logStartupProfileInfo [line]:640 - [message]:No active profile set, falling back to 1 default profile: "default"
+[FLEXCORE]:2024-10-09 09:43:59.956 [host]:DinhQuan [level]:INFO 
+                [appname]:inspectionmgt [other]:  
+                10339 [threadid]:main [package]:com.fds.flex.core.inspectionmgt.InspectionMgtApplication [method]:logStarted [line]:61 - [message]:Started InspectionMgtApplication in 10.165 seconds (JVM running for 10.565)

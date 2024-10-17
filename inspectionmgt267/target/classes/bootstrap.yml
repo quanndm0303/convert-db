@@ -1,0 +1,109 @@
+#==========Actuator====================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+#==========Eureka====================
+eureka:
+  client:
+    enabled: false
+    service-url:
+      defaultZone: http://localhost:8015/eureka
+server:
+  port: 8008
+grpc:
+  server:
+    port: 9008
+    security:
+      enabled: true
+      certificate-chain: file:////${flexcore.inspectionmgt.conf.dir}/keystore/certificate.pem
+      private-key: file:////${flexcore.inspectionmgt.conf.dir}/keystore/cert.key
+
+spring:
+  database:
+    primary: mongodb
+  data:
+    mongodb:
+      host: 192.168.68.194
+      port: 27194
+      database: flex_inspection
+      username: admin
+      password: admin
+      auto-index-creation: true
+  application:
+    name: inspectionmgt
+  datasource:
+    url: jdbc:mysql://192.168.68.130:3306/database_x?allowPublicKeyRetrieval=true&useSSL=false
+    username: thanhht
+    password: juniper@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+logging:
+  file:
+    path: logs/${spring.application.name}
+swagger:
+  open:
+    apiinfo:
+      version: v0:0:1
+      termsofserviceurl: v0:0:1
+      contact:
+        url: https://fds.vn/
+        name: FOSS Development & Services Joint Stock Company
+        email: contact@fds:vn
+      license: Trade Secret
+      licenseurl: http://www:iphandbook:org/handbook/ch11/p05/
+      description: Cmon APIS
+      title: FDS Software Product
+      vendorextensions:
+springdoc:
+  swagger-ui:
+    path: inspectionmgt/swagger-ui.html
+  api-docs:
+    path: /v3/inspectionmgt/api-docs
+#======Module internal connection=======
+flexcore:
+  inspectionmgt:
+    conf:
+      dir: C:\Users\doanv\workspace\gitlab.fds.vn\flex-platform\x05\inspectionmgt267
+    distributed:
+      cache:
+        redis:
+          host: 192.168.68.25
+          port: 6379
+      property:
+        filePath: file:////${flexcore.inspectionmgt.conf.dir}/conf/application-ext.properties
+    integrated:
+      securityconfig:
+        requestFilter:
+          - /inspectionmgt/internal/
+          - /inspectionmgt/admin/
+        issuers:
+          - https://idp.fds.vn/realms/thanhtra-x05-dev
+        antMatchers:
+          - /actuator/**
+          - /v3/inspectionmgt/api-docs/**
+          - /swagger-ui/**
+          - /inspectionmgt/external/**
+          - /webjars/**
+          - /inspectionmgt/swagger-ui/**
+          - /inspectionmgt/internal/demo/**
+      grpc:
+        master_token: mastertoken
+        gateway:
+          host: 192.168.68.209
+          port: 8080
+
+
